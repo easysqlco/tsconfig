@@ -8,46 +8,6 @@ Provides shared TypeScript configuration bases across EasySQL packages.
 npm install --save-dev @easysqlco/tsconfig
 ```
 
-## Usage
-
-### React Package
-
-For React packages/applications, extend the React configuration in your `tsconfig.json`:
-
-```json
-{
-  "extends": "@easysqlco/tsconfig/react",
-  "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
-}
-```
-
-For build-specific configuration (without source maps and declaration files), create a `tsconfig.build.json`:
-
-```json
-{
-  "extends": "@easysqlco/tsconfig/react/build",
-  "include": ["src"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
-}
-```
-
-### Overrides in consumer projects
-
-When extending the base config, it is important to override the following settings in your own `tsconfig.json` to avoid potential conflicts:
-
-```json
-{
-  "compilerOptions": {
-    "outDir": "dist",
-    "noEmit": false
-  }
-}
-```
-
 ## Configurations
 
 ### `@easysqlco/tsconfig/react`
