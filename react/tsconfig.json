@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "React Package",
+  "compilerOptions": {
+    // Modern output for bundlers
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+
+    // Project structure
+    "baseUrl": ".",
+    "outDir": "dist",
+
+    // Output and source maps control for package consumption (set false in tsconfig.build.json)
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "noEmit": false,  // output .js, .d.ts, and source maps as configured to consume the package!
+
+     // JS-Friendly options
+    "allowJs": true,
+    "noImplicitAny": false,                 // JS-friendly
+    "strict": true,                         // keep strong checking
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,   // React-friendly
+    "skipLibCheck": true,
+
+    // Resolution rules
+    "moduleResolution": "bundler",          // browser/react packages
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
+
+    // Behavior
+    "forceConsistentCasingInFileNames": true,
+  },
+}
