@@ -8,15 +8,10 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
 
-    // Project structure
-    "baseUrl": ".",
-    "outDir": "dist",
-
     // Output and source maps control for package consumption (set false in tsconfig.build.json)
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "noEmit": false,  // output .js, .d.ts, and source maps as configured to consume the package!
 
      // JS-Friendly options
     "allowJs": true,

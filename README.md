@@ -35,6 +35,19 @@ For build-specific configuration (without source maps and declaration files), cr
 }
 ```
 
+### Overrides in consumer projects
+
+When extending the base config, it is important to override the following settings in your own `tsconfig.json` to avoid potential conflicts:
+
+```json
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "noEmit": false
+  }
+}
+```
+
 ## Configurations
 
 ### `@easysqlco/tsconfig/react`
@@ -51,6 +64,37 @@ Base configuration for React packages with:
 Extends the React configuration with:
 - Declaration and source map generation disabled
 - Optimized for production builds
+
+### Usage pattern per environment
+
+For each environment-specific folder (for example, `react/`), the recommended pattern in consuming projects is:
+
+- `tsconfig.json` — base config used by your IDE, tests, and local development. This typically extends `@easysqlco/tsconfig/<env>` (for example, `react`) and may keep source maps enabled.
+- `tsconfig.build.json` — production build config used by your bundler/CI. This typically extends `@easysqlco/tsconfig/<env>/build` (for example, `react/build`) and turns off extras like source maps and declaration maps.
+
+Example for a React package:
+
+```jsonc
+// tsconfig.json (dev/IDE/tests)
+{
+  "extends": "@easysqlco/tsconfig/react",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+}
+```
+
+```jsonc
+// tsconfig.build.json (production build)
+{
+  "extends": "@easysqlco/tsconfig/react/build",
+  "compilerOptions": {
+    "outDir": "dist"
+  },
+}
+```
+
+Note: `noEmit` is intentionally not specified in these examples so it remains `false` in both configs, ensuring that TypeScript always emits build output when these configs are used. See the TypeScript docs for more details: https://www.typescriptlang.org/tsconfig/#noEmit
 
 ## Publishing
 
