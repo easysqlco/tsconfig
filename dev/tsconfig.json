@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Local Dev Environment",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strictNullChecks": true
+  }
+}

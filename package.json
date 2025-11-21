@@ -1,6 +1,6 @@
 {
   "name": "@easysqlco/tsconfig",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Provides shared tsconfig bases across easysql packages",
   "author": "EasySQL",
   "license": "MIT",
@@ -17,10 +17,12 @@
     "shared-config"
   ],
   "files": [
+    "dev/",
     "react/",
     "README.md"
   ],
   "exports": {
+    "./dev": "./dev/tsconfig.json",
     "./react": "./react/tsconfig.json",
     "./react/build": "./react/tsconfig.build.json"
   },
