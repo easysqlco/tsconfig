@@ -1,7 +1,7 @@
 {
   "name": "@easysqlco/tsconfig",
   "version": "0.0.4",
-  "description": "Provides shared tsconfig bases across easysql packages",
+  "description": "Provides shared TypeScript base configs for EasySQL packages",
   "author": "EasySQL",
   "license": "MIT",
   "repository": {
@@ -19,12 +19,20 @@
   "files": [
     "dev/",
     "react/",
+    "LICENSE",
     "README.md"
   ],
   "exports": {
     "./dev": "./dev/tsconfig.json",
     "./react": "./react/tsconfig.json",
     "./react/build": "./react/tsconfig.build.json"
+  },
+  "scripts": {
+    "validate": "node ./scripts/validate-package.mjs",
+    "prepack": "npm run validate"
+  },
+  "peerDependencies": {
+    "typescript": ">= 5 < 6"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Local Dev Environment",
+  "display": "Package Root Development",
   "compilerOptions": {
     "noEmit": true,
     "jsx": "react-jsx",

@@ -1,6 +1,9 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "React Package Build Override",
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    // Opt-in production override for packages that do not want TS emit artifacts from this build.
     "declaration": false,
     "declarationMap": false,
     "sourceMap": false

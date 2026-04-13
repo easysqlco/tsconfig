@@ -1,18 +1,12 @@
-name: Publish package
+name: Validate package
 
 on:
   push:
-    tags:
-      - 'v*'
+  pull_request:
   workflow_dispatch:
 
-permissions:
-  contents: read
-  packages: write
-  id-token: write
-
 jobs:
-  publish:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,16 +17,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          registry-url: https://npm.pkg.github.com
-          scope: '@easysqlco'
 
       - name: Validate package
         run: npm run validate
 
       - name: Check pack output
         run: npm pack --dry-run
-
-      - name: Publish
-        run: npm publish --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

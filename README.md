@@ -1,69 +1,119 @@
 # @easysqlco/tsconfig
 
-Provides shared TypeScript configuration bases across EasySQL packages.
+Shared TypeScript base configs for EasySQL packages.
 
-## Installation
+This package exists to keep compiler defaults stable across package repos,
+while still letting each consumer own its local paths, includes, emit
+strategy, and environment-specific overrides.
+
+## Install
 
 ```bash
-npm install --save-dev @easysqlco/tsconfig
+npm install --save-dev @easysqlco/tsconfig typescript
 ```
 
-## Configurations
+TypeScript `>= 5 < 6` is expected. EasySQL packages currently use TypeScript
+5.6.x, and the React base relies on `moduleResolution: "bundler"`, which is a
+TypeScript 5+ setting.
 
-### `@easysqlco/tsconfig/react`
+## Exported configs
 
-Base configuration for React packages with:
-- Modern ESNext target and modules
-- React JSX support (`react-jsx`)
-- Source maps and declaration files enabled
-- Bundler module resolution
-- Strict type checking with JS-friendly options
+| Export | Purpose | Typical consumer |
+| --- | --- | --- |
+| `@easysqlco/tsconfig/dev` | Root development config with `noEmit: true` | package-repo root `tsconfig.json` |
+| `@easysqlco/tsconfig/react` | React library development/build base | `lib/tsconfig.json` |
+| `@easysqlco/tsconfig/react/build` | Optional production override that disables declarations and maps | `lib/tsconfig.build.json` when that exact emit shape is desired |
 
-### `@easysqlco/tsconfig/react/build`
+## Layering contract
 
-Extends the React configuration with:
-- Declaration and source map generation disabled
-- Optimized for production builds
+- `dev` is for repository-root TypeScript usage: IDEs, editor tooling, tests,
+  and monorepo-local development.
+- `react` is for published React library source under `lib/`.
+- `react/build` is intentionally narrow. It only turns off declaration output,
+  declaration maps, and source maps. It does not change strictness, module
+  strategy, JSX, or consumer-owned paths.
 
-### Usage pattern per environment
+Current EasySQL packages mostly extend `@easysqlco/tsconfig/react` directly in
+`lib/tsconfig.json` and keep package-specific build behavior local. Use
+`react/build` only when your production TypeScript step should explicitly stop
+emitting declarations and maps.
 
-For each environment-specific folder (for example, `react/`), the recommended pattern in consuming projects is:
+## Recommended usage
 
-- `tsconfig.json` — base config used by your IDE, tests, and local development. This typically extends `@easysqlco/tsconfig/<env>` (for example, `react`) and may keep source maps enabled.
-- `tsconfig.build.json` — production build config used by your bundler/CI. This typically extends `@easysqlco/tsconfig/<env>/build` (for example, `react/build`) and turns off extras like source maps and declaration maps.
-
-Example for a React package:
+### Repository root
 
 ```jsonc
-// tsconfig.json (dev/IDE/tests)
+{
+  "extends": "@easysqlco/tsconfig/dev",
+  "compilerOptions": {
+    "noEmit": true
+  }
+}
+```
+
+### React library source
+
+```jsonc
 {
   "extends": "@easysqlco/tsconfig/react",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist"
   },
+  "files": ["src/index.ts"]
 }
 ```
 
+### Optional production override
+
 ```jsonc
-// tsconfig.build.json (production build)
 {
   "extends": "@easysqlco/tsconfig/react/build",
   "compilerOptions": {
+    "rootDir": "src",
     "outDir": "dist"
   },
+  "files": ["src/index.ts"]
 }
 ```
 
-Note: `noEmit` is intentionally not specified in these examples so it remains `false` in both configs, ensuring that TypeScript always emits build output when these configs are used. See the TypeScript docs for more details: https://www.typescriptlang.org/tsconfig/#noEmit
+If your package must publish `.d.ts` files, keep using
+`@easysqlco/tsconfig/react` for the build step or locally override the
+declaration-related flags.
 
-## Publishing
+## Tooling suite fit
 
-To publish a new version:
+EasySQL package repos commonly install this package together with:
+
+- `@easysql/eslint-config`
+- `@easysql/eslint-config-react`
+
+The packages intentionally cover different layers:
+
+- `@easysqlco/tsconfig` defines shared TypeScript compiler defaults.
+- `@easysql/eslint-config` defines shared base linting/formatting defaults.
+- `@easysql/eslint-config-react` adds React-specific lint rules.
+
+Keep the import paths as published. The TypeScript package currently uses the
+`@easysqlco` scope, while the ESLint packages remain under `@easysql`.
+
+## Validation and publishing
+
+Run the package validation before publishing:
 
 ```bash
-npm version patch|minor|major
-npm publish
+npm run validate
+npm pack --dry-run
 ```
+
+The validation script checks that:
+
+- each exported config path exists
+- exported config files are included in the published package
+- JSONC parsing succeeds
+- local `extends` chains resolve
+
+The publish workflow runs the same validation before `npm publish`.
 
 ## License
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React Package",
+  "display": "React Package Development",
   "compilerOptions": {
     // Modern output for bundlers
     "target": "ESNext",
@@ -8,27 +8,27 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
 
-    // Output and source maps control for package consumption (set false in tsconfig.build.json)
+    // Consumer-owned rootDir/outDir stay local. This base only defines emit defaults.
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
 
-     // JS-Friendly options
+    // JS-friendly strictness balance used across current EasySQL packages
     "allowJs": true,
-    "noImplicitAny": false,                 // JS-friendly
-    "strict": true,                         // keep strong checking
+    "noImplicitAny": false,
+    "strict": true,
     "strictNullChecks": true,
-    "strictPropertyInitialization": false,   // React-friendly
+    "strictPropertyInitialization": false,
     "skipLibCheck": true,
 
     // Resolution rules
-    "moduleResolution": "bundler",          // browser/react packages
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
 
     // Behavior
-    "forceConsistentCasingInFileNames": true,
-  },
+    "forceConsistentCasingInFileNames": true
+  }
 }
